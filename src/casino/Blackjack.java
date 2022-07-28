@@ -49,6 +49,11 @@ public class Blackjack extends GameMechanics implements GameRequirements{
             }
             sum += cardValues.get(c.getRank());
         }
+        if (sum == 21) {
+            System.out.println("\nYou got 21! You will receive 3x the amount you bet with!");
+            player.setFunds(player.getFunds() + (bet * 3));
+            return;
+        }
         System.out.println("\n\nCurrent player sum: " + sum);
         Scanner scan = new Scanner(System.in);
         while (sum <= 21) {
