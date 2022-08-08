@@ -56,6 +56,7 @@ public class Blackjack extends GameMechanics implements GameRequirements{
         }
         System.out.println("\n\nCurrent player sum: " + sum);
         Scanner scan = new Scanner(System.in);
+        boolean aceChange = false;
         while (sum <= 21) {
             System.out.println("Enter 1 to hit or 0 to stand.");
             int hitOrStand = scan.nextInt();
@@ -73,10 +74,17 @@ public class Blackjack extends GameMechanics implements GameRequirements{
                 break;
             } else {
                 deck.add_card(hand);
+                //edge cases for aces
                 if (hand.get(hand.size() - 1).getRank().equals("A") &&
                         ((cardValues.get(hand.get(hand.size() - 1).getRank()) + sum) > 21)) {
                     cardValues.replace("A", 1);
-                }
+                } else if (hand.get(0).getRank().equals("A") || hand.get(1).getRank().equals("A")) {
+                    if ((cardValues.get(hand.get(hand.size() - 1).getRank()) + sum > 21) && aceChange == false) {
+                        sum -= 10;
+                        cardValues.replace("A", 1);
+                        aceChange = true;
+                    }
+                } 
                 sum += cardValues.get((hand.get(hand.size() - 1)).rank);
                 System.out.println("\n\nCurrent player sum: " + sum);
                 if (sum > 21) {
