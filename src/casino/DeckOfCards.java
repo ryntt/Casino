@@ -19,6 +19,7 @@ public class DeckOfCards
         }
         //shuffle mechanism
         //from https://stackoverflow.com/questions/39557701/shuffle-a-deck-of-cards-in-java
+        //an ordered deck would be identical to this class without a shuffled mechanism
         while (og_deck.size() > 0) {
             int shuffled_index = (int) (Math.random() * og_deck.size());
             shuffled_deck.add(og_deck.remove(shuffled_index));
