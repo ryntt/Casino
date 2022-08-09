@@ -3,8 +3,9 @@
 - This is a casino program with several features
 - Current features:
   - Blackjack game
-    - There's currently a bug where if you have an ace in your starting hand
-    and you draw an ace, the two aces might have values of 1 (instead of one 11 and one 1) 
+    - There's a peculiar bug - suppose I have the hand (A, 3), with a sum of 14. If I draw a 5, it
+    becomes (A, 3, 5), which sums to 19. If I draw a 4, the ace should change values from 11 to 1, 
+    so the hand would be (A, 3, 5, 4) with a sum of 13. Instead, it hits 23 and the player loses. 
   - Slot machine game
   - Bầu cua cá cọp, a Vietnamese gambling game
   - A restaurant
