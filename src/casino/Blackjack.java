@@ -81,9 +81,6 @@ public class Blackjack extends GameMechanics implements GameRequirements{
                 //if the drawn card is an ace and it'll send the sum over 21, change ace's value to 1
                 if (hand.get(hand.size() - 1).getRank().equals("A") &&
                         ((cardValues.get(hand.get(hand.size() - 1).getRank()) + sum) > 21)) {
-                    if (aceChange == false) {                 
-                        sum -= 10;
-                    }
                     cardValues.replace("A", 1);
                     aceChange = true;
                 //if one starting card is an ace and the drawn card sends the sum over 21 and ace value wasn't changed yet
