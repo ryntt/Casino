@@ -36,6 +36,7 @@ public class Blackjack extends GameMechanics implements GameRequirements{
 
     public void playGame(Player player) {
         int bet = placeBet(player);
+        boolean aceChange = false;
         DeckOfCards deck = new DeckOfCards();
         System.out.print("\nYour hand: ");
         ArrayList<Card> hand = deck.deal_up(2);
@@ -43,9 +44,11 @@ public class Blackjack extends GameMechanics implements GameRequirements{
         ArrayList<Card> compHand = deck.deal_up(1);
         int sum = 0;
         int compSum = 0;
+        //basically if both cards are aces then the sum will start out as 12 
         for (Card c : hand) {
             if (c.getRank().equals("A") && ((cardValues.get(c.getRank()) + sum) > 21)) {
                 cardValues.replace("A", 1);
+                aceChange = true;
             }
             sum += cardValues.get(c.getRank());
         }
@@ -56,7 +59,6 @@ public class Blackjack extends GameMechanics implements GameRequirements{
         }
         System.out.println("\n\nCurrent player sum: " + sum);
         Scanner scan = new Scanner(System.in);
-        boolean aceChange = false;
         while (sum <= 21) {
             System.out.println("Enter 1 to hit or 0 to stand.");
             int hitOrStand = scan.nextInt();
@@ -73,17 +75,27 @@ public class Blackjack extends GameMechanics implements GameRequirements{
             if (hitOrStand == 0) {
                 break;
             } else {
+                //draws a card
                 deck.add_card(hand);
                 //edge cases for aces
+                //if the drawn card is an ace and it'll send the sum over 21, change ace's value to 1
                 if (hand.get(hand.size() - 1).getRank().equals("A") &&
                         ((cardValues.get(hand.get(hand.size() - 1).getRank()) + sum) > 21)) {
-                    cardValues.replace("A", 1);
-                } else if (hand.get(0).getRank().equals("A") || hand.get(1).getRank().equals("A")) {
-                    if ((cardValues.get(hand.get(hand.size() - 1).getRank()) + sum > 21) && aceChange == false) {
+                    if (aceChange == false) {                 
                         sum -= 10;
-                        cardValues.replace("A", 1);
-                        aceChange = true;
                     }
+                    cardValues.replace("A", 1);
+                    aceChange = true;
+                //if one starting card is an ace and the drawn card sends the sum over 21 and ace value wasn't changed yet
+                } else if (hand.get(0).getRank().equals("A") || hand.get(1).getRank().equals("A") 
+                    && !(hand.get(0).getRank().equals("A") && hand.get(1).getRank().equals("A"))) {
+                    if (cardValues.get(hand.get(hand.size() - 1).getRank()) + sum > 21) {
+                        if (aceChange == false) {                 
+                            sum -= 10;
+                        }
+                    }
+                    cardValues.replace("A", 1);
+                    aceChange = true;
                 } 
                 sum += cardValues.get((hand.get(hand.size() - 1)).rank);
                 System.out.println("\n\nCurrent player sum: " + sum);
